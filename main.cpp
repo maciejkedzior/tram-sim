@@ -67,6 +67,10 @@ class TransitNetwork {
                 std::cout << "| " << line[i] << std::endl;
             if (line.size() > 1) std::cout << "- " << line.back() << std::endl;
         }
+
+        void searchGrid(const Stop& starting_point){
+            grid.depthFirstSearch(starting_point, [](const Stop& name){std::cout << "Tram stop: " << name << std::endl; } );
+        }
 };
 
 
@@ -128,6 +132,5 @@ int main(){
     network.addNewTramLine(72, route);
     std::cout << "Added new line!" << std::endl;
     network.printSpecifiedTramLine(72);
-     
     return 0;
 }
