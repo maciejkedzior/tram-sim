@@ -69,24 +69,26 @@ class TransitNetwork {
         }
 };
 
-std::map<std::string, Stop> stops = {
-    std::make_pair("Czerwone Maki P+R", Stop("Czerwone Maki P+R", 0, 0)),
-    std::make_pair("Chmieleniec", Stop("Chmieleniec", 1, 1)),
-    std::make_pair("Kampus UJ", Stop("Kampus UJ", 2, 2)),
-    std::make_pair("Ruczaj", Stop("Ruczaj", 3, 3)),
-    std::make_pair("Norymberska", Stop("Norymberska", 4, 4)),
-    std::make_pair("Grota-Roweckiego", Stop("Grota-Roweckiego", 6, 5)),
-    std::make_pair("Lipinskiego", Stop("Lipinskiego", 7, 5)),
-    std::make_pair("Kobierzynska", Stop("Kobierzynska", 8, 6)),
-    std::make_pair("Slomiana", Stop("Slomiana", 8, 7)),
-    std::make_pair("Kapelanka", Stop("Kapelanka", 8, 8)),
-    std::make_pair("Borsucza", Stop("Borsucza", 9, 5)),
-    std::make_pair("Brozka", Stop("Brozka", 10, 4)),
-    std::make_pair("Lagiewniki", Stop("Lagiewniki", 11, 4)),
-    std::make_pair("Szwedzka", Stop("Szwedzka", 9, 9)),
-    std::make_pair("Rondo Grunwaldzkie", Stop("Rondo Grunwaldzkie", 10, 10)),
 
-};
+int main(){
+    std::map<std::string, Stop> stops = {
+        std::make_pair("Czerwone Maki P+R", Stop("Czerwone Maki P+R", 0, 0)),
+        std::make_pair("Chmieleniec", Stop("Chmieleniec", 1, 1)),
+        std::make_pair("Kampus UJ", Stop("Kampus UJ", 2, 2)),
+        std::make_pair("Ruczaj", Stop("Ruczaj", 3, 3)),
+        std::make_pair("Norymberska", Stop("Norymberska", 4, 4)),
+        std::make_pair("Grota-Roweckiego", Stop("Grota-Roweckiego", 6, 5)),
+        std::make_pair("Lipinskiego", Stop("Lipinskiego", 7, 5)),
+        std::make_pair("Kobierzynska", Stop("Kobierzynska", 8, 6)),
+        std::make_pair("Slomiana", Stop("Slomiana", 8, 7)),
+        std::make_pair("Kapelanka", Stop("Kapelanka", 8, 8)),
+        std::make_pair("Borsucza", Stop("Borsucza", 9, 5)),
+        std::make_pair("Brozka", Stop("Brozka", 10, 4)),
+        std::make_pair("Lagiewniki", Stop("Lagiewniki", 11, 4)),
+        std::make_pair("Szwedzka", Stop("Szwedzka", 9, 9)),
+        std::make_pair("Rondo Grunwaldzkie", Stop("Rondo Grunwaldzkie", 10, 10)),
+
+    };
 
     std::vector<std::pair<Stop, Stop>> connections = {
         std::make_pair(stops.at("Czerwone Maki P+R"), stops.at("Chmieleniec")),
