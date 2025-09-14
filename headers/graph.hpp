@@ -33,10 +33,26 @@ class Graph{
         };
 
     private:
-    std::unordered_map<Vertex, std::list<std::pair<Vertex, Weight>>, CustomHash> edge_list;
-    std::map<Vertex, bool> visited;
-    GraphType graph_type;
-    WeightCase weight_case;
+        std::unordered_map<Vertex, std::list<std::pair<Vertex, Weight>>, CustomHash> edge_list;
+        std::map<Vertex, bool> visited;
+        GraphType graph_type;
+        WeightCase weight_case;
+    private:
+        template<typename Func>
+        void depthFirstSearchImpl(const Vertex& v, Func& visitor){
+            visited[v] = true;
+            visitor(v.value);
+
+            auto it = edge_list.find(v);
+            if (it == edge_list.end()) throw std::logic_error("DFS impl failed");
+
+            for (const auto& adj: it->second) {
+                const Vertex& neighbour = adj.first;
+                auto itv = visited.find(neighbour);
+                if (itv == visited.end() || !itv->second)
+                    depthFirstSearchImpl(neighbour, visitor);
+            }
+        }
 
     public:
     Graph(GraphType type=GraphType::UNDIRECTED, WeightCase weight=WeightCase::WEIGHTLESS): graph_type(type), weight_case(weight) {}
@@ -48,16 +64,19 @@ class Graph{
         return keys;
     }
 
-    void depthFirstSearch(T x){
-        Vertex v(x);
-        visited[v] = true;
-        std::cout << v.value << std::endl;
-
-        for (auto i=edge_list[v].begin(); i != edge_list[v].end(); i++)
-            if(!visited[(*i).first.value])
-                depthFirstSearch((*i).first.value); 
+    template<typename Func>
+    void depthFirstSearch(const T& start, Func visitor){
+        visited.clear();
+        Vertex v(start);
+        if (!keyInGraph(start)) throw std::logic_error("DFS error -> ");
+        depthFirstSearchImpl(v, visitor);
     }
 
+    std::vector<T> depthFirstSearchOrder(const T& start) {
+        std::vector<T> order;
+        depthFirstSearch(start, [&order](const T& val){ order.push_back(val); });
+        return order;
+    }
     
     double sizeOfGraph() const {
         int size=0;
