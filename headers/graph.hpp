@@ -71,12 +71,16 @@ class Graph{
     }
 
     void removeVertex(const T& x) { 
-        if (edge_list.find(Vertex(x)) != edge_list.end()) edge_list.erase(Vertex(x));
+        if (!keyInGraph(x)) return;
+
         for (auto& vertex: edge_list){
-            auto list = vertex.second;
-            if (std::find_if(list.begin(), list.end(), [&](std::pair<Vertex,Weight> const& b){ return b.first == Vertex(x); }) != vertex.second.end())
-                vertex.second.remove(Vertex(x));
+            auto& list = vertex.second;
+            list.remove_if([&](const std::pair<Vertex, Weight>& e){
+                return e.first.value == x;
+            });
         }
+        edge_list.erase(Vertex(x));
+        visited.erase(Vertex(x));
     }
 
     // If graph is DIRECTED then it creates arrow x -> y
