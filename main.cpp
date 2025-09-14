@@ -1,5 +1,4 @@
 #include <iostream>                  
-#include <array>
 #include <map>
 #include <vector>
 #include <exception>
@@ -50,7 +49,7 @@ class TransitNetwork {
         Graph<Stop> grid;
         TramRoutes routes;
     public:
-        TransitNetwork(const std::string& city, std::array<std::pair<Stop, Stop>, 14> connections): city_name(city), grid(), routes(grid){
+        TransitNetwork(const std::string& city, const std::vector<std::pair<Stop,Stop>>& connections): city_name(city), grid(), routes(grid){
             for (const auto& connection: connections)
                 grid.addEdge(connection);
         }
@@ -89,9 +88,7 @@ std::map<std::string, Stop> stops = {
 
 };
 
-
-int main(){
-    std::array<std::pair<Stop, Stop>, 14> connections = {
+    std::vector<std::pair<Stop, Stop>> connections = {
         std::make_pair(stops.at("Czerwone Maki P+R"), stops.at("Chmieleniec")),
         std::make_pair(stops.at("Chmieleniec"), stops.at("Kampus UJ")),
         std::make_pair(stops.at("Kampus UJ"), stops.at("Ruczaj")),
