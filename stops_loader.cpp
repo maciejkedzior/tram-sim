@@ -30,7 +30,7 @@ std::map<std::string, Stop> loadStops(const std::string& filepath) {
         stops.try_emplace(name, name, x, y);
     }
 
-    std::cout << std::format("[JSON DEBUG] [{}] read {} stops!\n", filepath, stops.size());
+    std::cout << std::format("[JSON DEBUG] [{}] {} stops loaded!\n", filepath, stops.size());
 
     ifs.close();
     return stops;
