@@ -11,7 +11,7 @@
 int main(){
     std::map<std::string, Stop> stops;
     try {
-        stops = loadStops("data/stops.json");
+        stops = TramSim::loadStops("data/stops.json");
     } catch (const std::exception& e) {
         std::cerr << "Failed to load stops: " << e.what() << std::endl;
         return 1;

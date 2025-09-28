@@ -1,7 +1,12 @@
-#pragma once
+#ifndef TRAMSIM_STOPS_LOADER_HPP
+#define TRAMSIM_STOPS_LOADER_HPP
 
 #include <map>
 #include <string>
 #include "stop.hpp"
 
-std::map<std::string, Stop> loadStops(const std::string& filepath);
+namespace TramSim {
+    std::map<std::string, Stop> loadStops(const std::string& filepath);
+}
+
+#endif
