@@ -9,13 +9,15 @@
 struct Stop {
     std::string name;
     unsigned int x = 0, y = 0;
-    Stop(std::string n = {}, unsigned int _x = 0, unsigned int _y = 0)
-        : name(std::move(n)), x(_x), y(_y) {}
+    bool on_demand;
+
+    Stop(std::string n = {}, unsigned int _x = 0, unsigned int _y = 0, bool _on_demand = false): name(std::move(n)), x(_x), y(_y), on_demand(_on_demand) {}
     friend std::ostream& operator<<(std::ostream& os, const Stop& obj) {
-        os << obj.name << " (" << obj.x << "," << obj.y << ")";
+        std::string on_demand = obj.on_demand ? "[ON_DEMAND ONLY]" : "";
+        os << obj.name << " (" << obj.x << "," << obj.y << ") " << on_demand;
         return os;
     }
-    bool operator == (const Stop& other) const { return std::tie(name, x, y) == std::tie(other.name, other.x, other.y); }
+    bool operator == (const Stop& other) const { return std::tie(name, x, y, on_demand) == std::tie(other.name, other.x, other.y, other.on_demand); }
     bool operator != (const Stop& other) const { return !((*this) == other); }
     bool operator < (const Stop& other) const { return std::tie(name, x, y) < std::tie(other.name, other.x, other.y); }
     bool operator > (const Stop& other) const { return std::tie(name, x, y) > std::tie(other.name, other.x, other.y); }
@@ -39,7 +41,8 @@ namespace std {
         // <-- note the added 'const' here
         template <typename FormatContext>
         auto format(const Stop& stop, FormatContext& ctx) const -> decltype(ctx.out()) {
-            return std::format_to(ctx.out(), "{} ({}, {})", stop.name, stop.x, stop.y);
+            std::string on_demand = stop.on_demand ? "[ON_DEMAND ONLY]" : "";
+            return std::format_to(ctx.out(), "{} ({}, {}) {}", stop.name, stop.x, stop.y, on_demand);
         }
     };
 }
