@@ -13,7 +13,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR})
 # Sources - add new .cpp files here when you create them
 set(SOURCES
     main.cpp
-    stops_loader.cpp
+    data_loaders.cpp
 )
 
 add_executable(${PROJECT_NAME} ${SOURCES})

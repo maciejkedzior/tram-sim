@@ -5,7 +5,7 @@
 #include "headers/city_structure.hpp"
 #include "headers/graph.hpp"
 #include "headers/stop.hpp"
-#include "headers/stops_loader.hpp"
+#include "headers/data_loaders.hpp"
 
 
 int main(){
