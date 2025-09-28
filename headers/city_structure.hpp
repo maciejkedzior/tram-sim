@@ -50,6 +50,10 @@ namespace TramSim{
             void searchGrid(const Stop& starting_point){
                 grid.depthFirstSearch(starting_point, [](const Stop& name){std::cout << std::format("Tram stop: {}", name) << std::endl; } );
             }
+
+            void printWholeNetwork(){
+                grid.printConnections();
+            }
     };
 }
 #endif
