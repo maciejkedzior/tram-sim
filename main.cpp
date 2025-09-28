@@ -1,6 +1,7 @@
 #include <iostream>                  
 #include <map>
 #include <vector>
+#include <string>
 #include <exception>
 #include "headers/city_structure.hpp"
 #include "headers/graph.hpp"
@@ -10,6 +11,7 @@
 
 int main(){
     std::map<std::string, Stop> stops;
+    std::map<std::string, std::vector<std::string>> routes;
     try {
         stops = TramSim::loadStops("data/stops.json");
     } catch (const std::exception& e) {
@@ -34,25 +36,27 @@ int main(){
         std::make_pair(stops.at("Brozka"), stops.at("Lagiewniki")),
     };
 
-    std::vector<Stop> route = {
-        stops.at("Czerwone Maki P+R"),
-        stops.at("Chmieleniec"),
-        stops.at("Kampus UJ"),
-        stops.at("Ruczaj"),
-        stops.at("Norymberska"),
-        stops.at("Grota-Roweckiego"),
-        stops.at("Lipinskiego"),
-        stops.at("Kobierzynska"),
-        stops.at("Slomiana"),
-        stops.at("Kapelanka"),
-        stops.at("Szwedzka"),
-        stops.at("Rondo Grunwaldzkie"),
-    };
+    try {
+        routes = TramSim::loadRoutes("data/routes.json");
+    } catch (const std::exception& e) {
+        std::cerr << "Failed to load routes: " << e.what() << std::endl;
+        return 1;
+    }
+
     
-    TransitNetwork network = TransitNetwork("Krakow", connections);
+    TramSim::TransitNetwork network("Krakow", connections);
     std::cout << "Created network!" << std::endl;
-    network.addNewTramLine(72, route);
-    std::cout << "Added new line!" << std::endl;
+
+    for (const auto& [route_number, route]: routes){
+        std::vector<Stop> transformed_route;
+        for (const auto& stop_name: route)
+            transformed_route.push_back(stops.at(stop_name));
+        network.addNewTramLine(std::stoul(route_number), transformed_route);
+        std::cout << std::format("Added new line [{}]!", route_number) << std::endl;
+    }
+
+    std::cout << "----------------------------------" << std::endl;
     network.printSpecifiedTramLine(72);
+    network.printSpecifiedTramLine(11);
     return 0;
 }
