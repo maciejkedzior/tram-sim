@@ -23,13 +23,16 @@ namespace TramSim {
         for (const auto& item : j.items()) {
             const std::string name = item.key();
             const auto& data = item.value();
-            if (!data.is_object() || !data.contains("x") || !data.contains("y")
-                || !data["x"].is_number_unsigned() || !data["y"].is_number_unsigned()) {
+
+            if (!data.is_object() || !data.contains("x") || !data.contains("y") || !data.contains("on_demand")
+                || !data["x"].is_number_unsigned() || !data["y"].is_number_unsigned() || !data["on_demand"].is_boolean()) {
                 throw std::logic_error("Incorrect data for " + name + " stop!");
             }
+
             unsigned int x = data["x"].get<unsigned int>();
             unsigned int y = data["y"].get<unsigned int>();
-            stops.try_emplace(name, name, x, y);
+bool on_demand = data["on_demand"].get<bool>();
+            stops.try_emplace(name, name, x, y, on_demand);
         }
 
         std::cout << std::format("[JSON DEBUG] [{}] {} stops loaded!\n", filepath, stops.size());

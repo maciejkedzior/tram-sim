@@ -8,6 +8,7 @@
 namespace TramSim {
     std::map<std::string, Stop> loadStops(const std::string& filepath);
     std::map<std::string, std::vector<std::string>> loadRoutes(const std::string& filepath);
+    std::vector<std::pair<std::string, std::string>> loadConnections(const std::string& filepath);
 }
 
 #endif
