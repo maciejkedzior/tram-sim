@@ -31,7 +31,7 @@ namespace TramSim {
 
             unsigned int x = data["x"].get<unsigned int>();
             unsigned int y = data["y"].get<unsigned int>();
-bool on_demand = data["on_demand"].get<bool>();
+            bool on_demand = data["on_demand"].get<bool>();
             stops.try_emplace(name, name, x, y, on_demand);
         }
 
@@ -71,5 +71,37 @@ bool on_demand = data["on_demand"].get<bool>();
 
         ifs.close();
         return routes;
+    }
+
+    std::vector<std::pair<std::string, std::string>> loadConnections(const std::string& filepath){
+        std::ifstream ifs(filepath);
+        if (!ifs.is_open()) throw std::runtime_error("Cannot open stops file: " + filepath);
+
+        nlohmann::json j;
+        try {
+            ifs >> j;
+        } catch (const nlohmann::json::exception& e) {
+            throw std::runtime_error(std::string("JSON parse error: ") + e.what());
+        }
+
+        std::vector<std::pair<std::string, std::string>> connections;
+        
+        for (const auto& item : j.items()) {
+            const std::string name = item.key();
+            const auto& data = item.value();
+
+            if (!data.is_object() || !data.contains("neighbours") || !data["neighbours"].is_array()) {
+                throw std::logic_error("Incorrect data for " + name + " connections!");
+            }
+
+            for (const auto& stop: data["neighbours"]){
+                connections.push_back(std::make_pair(name, stop));
+            }
+        }
+
+        std::cout << std::format("[JSON DEBUG] [{}] connections loaded!\n", filepath);
+
+        ifs.close();
+        return connections;
     }
 };
