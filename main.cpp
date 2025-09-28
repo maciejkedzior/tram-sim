@@ -2,7 +2,6 @@
 #include <map>
 #include <vector>
 #include <string>
-#include <exception>
 #include "headers/city_structure.hpp"
 #include "headers/graph.hpp"
 #include "headers/stop.hpp"
