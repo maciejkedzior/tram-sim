@@ -11,40 +11,24 @@
 int main(){
     std::map<std::string, Stop> stops;
     std::map<std::string, std::vector<std::string>> routes;
+    std::vector<std::pair<Stop, Stop>> connections;
+
     try {
         stops = TramSim::loadStops("data/stops.json");
-    } catch (const std::exception& e) {
-        std::cerr << "Failed to load stops: " << e.what() << std::endl;
-        return 1;
-    }
-
-    std::vector<std::pair<Stop, Stop>> connections = {
-        std::make_pair(stops.at("Czerwone Maki P+R"), stops.at("Chmieleniec")),
-        std::make_pair(stops.at("Chmieleniec"), stops.at("Kampus UJ")),
-        std::make_pair(stops.at("Kampus UJ"), stops.at("Ruczaj")),
-        std::make_pair(stops.at("Ruczaj"), stops.at("Norymberska")),
-        std::make_pair(stops.at("Norymberska"), stops.at("Grota-Roweckiego")),
-        std::make_pair(stops.at("Grota-Roweckiego"), stops.at("Lipinskiego")),
-        std::make_pair(stops.at("Lipinskiego"), stops.at("Kobierzynska")),
-        std::make_pair(stops.at("Kobierzynska"), stops.at("Slomiana")),
-        std::make_pair(stops.at("Slomiana"), stops.at("Kapelanka")),
-        std::make_pair(stops.at("Kapelanka"), stops.at("Szwedzka")),
-        std::make_pair(stops.at("Szwedzka"), stops.at("Rondo Grunwaldzkie")),
-        std::make_pair(stops.at("Lipinskiego"), stops.at("Borsucza")),
-        std::make_pair(stops.at("Borsucza"), stops.at("Brozka")),
-        std::make_pair(stops.at("Brozka"), stops.at("Lagiewniki")),
-    };
-
-    try {
         routes = TramSim::loadRoutes("data/routes.json");
+        for (const auto& [first, second]: TramSim::loadConnections("data/stops.json")){
+            connections.push_back(std::make_pair(stops.at(first), stops.at(second)));
+        }
     } catch (const std::exception& e) {
-        std::cerr << "Failed to load routes: " << e.what() << std::endl;
+        std::cerr << "Failed to load data file: " << e.what() << std::endl;
         return 1;
     }
 
-    
     TramSim::TransitNetwork network("Krakow", connections);
     std::cout << "Created network!" << std::endl;
+    std::cout << "----------------------------------" << std::endl;
+    network.printWholeNetwork();
+    std::cout << "----------------------------------" << std::endl << std::endl;
 
     for (const auto& [route_number, route]: routes){
         std::vector<Stop> transformed_route;
