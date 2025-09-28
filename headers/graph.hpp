@@ -106,6 +106,7 @@ class Graph{
     void addEdge(const T&x, const T&y, Weight weight=0) {
         if (edge_list.find(Vertex(x)) == edge_list.end()) addVertex(x);
         if (edge_list.find(Vertex(y)) == edge_list.end()) addVertex(y);
+        if (adjacent(x, y)) return;
 
         edge_list.at(Vertex(x)).emplace_back(std::make_pair(Vertex(y), weight));
         
@@ -114,8 +115,9 @@ class Graph{
     }
     
     void addEdge(const std::pair<T,T>& vertexes, Weight weight=0){
-        if (!keyInGraph(vertexes.first)) addVertex(vertexes.first);
+        if (!keyInGraph(vertexes.first)) addVertex(vertexes.first); 
         if (!keyInGraph(vertexes.second)) addVertex(vertexes.second);
+        if (adjacent(vertexes.first, vertexes.second)) return;
 
         edge_list.at(Vertex(vertexes.first)).emplace_back(std::make_pair(Vertex(vertexes.second), weight));
         
